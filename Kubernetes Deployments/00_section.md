@@ -3,5 +3,3 @@
 .blockwhite Kubernetes Deployments
 
 .blockteal On the IBM Cloud
-
-

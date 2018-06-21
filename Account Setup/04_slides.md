@@ -1,5 +1,3 @@
-
-
 !SLIDE[bg=_images/backgrounds/white_bg.png] commandline incremental
 
 # Install the IBM Developer Toolkit
@@ -31,8 +29,6 @@ https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl
 # Validate installation
 
     $ which bx
-    /home/nibz/local/bin/bx
+    /usr/local/bin/bx
     $ which kubectl
     /usr/bin/kubectl
-
-

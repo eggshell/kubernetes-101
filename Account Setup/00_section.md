@@ -3,5 +3,3 @@
 .blockwhite Account Setup
 
 .blockteal On the IBM Cloud
-
-

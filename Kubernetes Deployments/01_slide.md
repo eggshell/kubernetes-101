@@ -20,25 +20,26 @@
 
 !SLIDE[bg=_images/backgrounds/white_bg.png] commandline incremental
 
-# Account setup
+# Account Login from the Commandline
 
-    $ bx login
-    $ bx api https://api.ng.bluemix.net
+    $ bx login --sso
+    $ bx api
+    API endpoint: https://api.ng.bluemix.net
+
 
 !SLIDE[bg=_images/backgrounds/white_bg.png] commandline incremental
 
 # Account setup
 
     $ bx cs clusters
-    Name                         ID                                 State       Created          Workers   Location   Version   
-    k8s.nibz.science             c78ab82852aa47c793aa993178f1c560   normal      2 months ago     4         dal10      1.8.11_1509   
-    $ bx cs cluster-config k8s.nibz.science
+    Name                         ID                                 State       Created          Workers   Location   Version
+    eggshell-kube-101            8d2ef30a4f524bdbb179d7f0b4e02125   normal     4 hours ago      3         dal10      1.9.8_1515
+    $ bx cs cluster-config eggshell-kube-101
     OK
-    The configuration for k8s.nibz.science was downloaded successfully. Export environment variables to start using Kubernetes.
-    export KUBECONFIG=/home/nibz/.bluemix/plugins/container-service/clusters/k8s.nibz.science/kube-config-dal10-k8s.nibz.science.yml
+    The configuration for eggshell-kube-101 was downloaded successfully. Export environment variables to start using Kubernetes.
 
-    $ export KUBECONFIG=/home/nibz/.bluemix/plugins/container-service/clusters/k8s.nibz.science/kube-config-dal10-k8s.nibz.science.yml
-
+    export KUBECONFIG=/home/eggshell/.bluemix/plugins/container-service/clusters/eggshell-kube-101/kube-config-dal10-eggshell-kube-101.yml
+    $ export KUBECONFIG=/home/eggshell/.bluemix/plugins/container-service/clusters/eggshell-kube-101/kube-config-dal10-eggshell-kube-101.yml
 
 
 !SLIDE[bg=_images/backgrounds/white_bg.png] commandline incremental
@@ -237,7 +238,7 @@
 
 .blockwhite Pause and Inquire!
 
-.blockteal Use ``env`` and ``ping`` to verify that service discovery works
+.blockteal Use ``env`` and ``nslookup`` to verify that service discovery works
 
 .blockteal Extra: If you ``kubectl delete`` the redis-server pod, what happens?
 

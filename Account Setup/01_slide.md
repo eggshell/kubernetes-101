@@ -2,10 +2,9 @@
 
 # Steps
 
-* Sign up for account using link
+* Sign in to IBM Cloud account
 * Navigate to Billing
 * Add promotional code
 * Navigate to Containers
 * Create Kubernetes Cluster
-* Install `bx` and `kubectl` utilities
-
+* Install `ibmcloud` and `kubectl` utilities

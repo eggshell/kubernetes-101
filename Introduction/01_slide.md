@@ -1,18 +1,11 @@
 !SLIDE[bg=_images/backgrounds/white_bg.png]
 
-# Who am I
+# whoami
 
-* Spencer Krum
-* @nibalizer
-* IBM
-* Developer Advocate
-* Oregon Native
-* Ops background
-
-
-!SLIDE[bg=_images/backgrounds/white_bg.png]
-
-# Who Else is Here
-
-* Rizchel Dayao - Developer Advocate, IBM
-* Cullen Taylor - Developer Advocate, IBM
+* Cullen Taylor
+* @eggshell on Slack, Freenode, GitHub
+* @eggshellcullen on Twitter
+* Developer Advocate for IBM
+* Texas Native
+* DevOps/OpenStack background
+* slides: https://blog.eggshell.me/kubernetes-101

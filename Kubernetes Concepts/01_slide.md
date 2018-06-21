@@ -5,7 +5,7 @@
 * k8s for short
 * Founded by Google
 * CNCF: Cloud Native Computing Foundation
-* Container Management
+* Focused on container orchestration
 
 
 !SLIDE[bg=_images/backgrounds/white_bg.png]
@@ -18,14 +18,18 @@
 
 !SLIDE[bg=_images/backgrounds/white_bg.png]
 
-# Container Management
+# What is a container
+
+![containersvsvm](../_images/containers_vs_vm.png)
+
+!SLIDE[bg=_images/backgrounds/white_bg.png]
+
+# Container Orchestration
 
 * Start some containers!
 * Which containers are running?
 * Did it crash? Restart it!
-* Make more of them, but keep them on different physical hosts
-
-
+* Make more of them, but keep them on different physical hosts.
 
 !SLIDE[bg=_images/backgrounds/white_bg.png]
 
@@ -43,6 +47,23 @@
 
 .blockteal * Service Discovery
 
+!SLIDE[bg=_images/backgrounds/white_bg.png]
+
+# Horizontal Scaling
+
+* Scale "out" or "in"
+* Add (or remove) nodes to a system
+* Example would be deploying your webapp to 3 more servers, stick behind a
+  load balancer.
+* In the past, had to rack a new server, bootstrap the OS and bins/libs, then
+  deploy your app.
+* Now, we can just deploy more containers to different physical hosts.
+
+!SLIDE[bg=_images/backgrounds/white_bg.png]
+
+# Service Discovery
+
+* We'll come back to this in a bit.
 
 !SLIDE[bg=_images/backgrounds/white_bg.png] commandline incremental
 
@@ -105,7 +126,7 @@
 
 # Pod
 
-* Smallest unit of deployment
+* Smallest unit of deployment - "the atom"
 * Consists usually of one container
 * Has an image, version, exposed port, etc
 
@@ -118,6 +139,16 @@
 * Replicasets manage pods
 * Entrypoint for more advanced rollout strategies
 
+!SLIDE[bg=_images/backgrounds/white_bg.png] incremental
+
+# ReplicaSet
+
+* Ensures that a specified number of pod "replicas" are running.
+* Makes sure a homogenous set of pods are always up and available.
+* Too many pods? Kill some!
+* Too few pods? Spin up some more!
+* Ensures state is kept where you want it without you needing to poke it.
+
 
 !SLIDE[bg=_images/backgrounds/white_bg.png] incremental
 
@@ -126,7 +157,26 @@
 * Exposes a single ip to the rest of the cluster
 * Almost like a load balancer
 * Maps to one or more pods
-* There are a couple different kinds
+* This combination of pods running some software and providing a way to access
+  it is called a **microservice**
+
+!SLIDE[bg=_images/backgrounds/white_bg.png]
+
+# Service Discovery
+
+* Managed Kubernetes cluster services (IKS, GCP, Azure, etc) typically give you
+  a DNS server.
+* If you have a service called "my-service" in namepsace "my-ns", then
+* a DNS record for "my-service.my-ns" is created.
+* All pods within the "my-ns" namespace will be able to find this service.
+* Prevents having to refer to hardcoded ip values.
+* Makes horizontal scaling easy.
+
+!SLIDE[bg=_images/backgrounds/white_bg.png]
+
+# A Visual Aid for All of That
+
+![Kubernetes Logical Constructs](../_images/k8s_logical_constructs.png)
 
 
 !SLIDE[bg=_images/backgrounds/white_bg.png]

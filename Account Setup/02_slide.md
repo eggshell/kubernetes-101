@@ -1,5 +1,5 @@
 !SLIDE[bg=_images/backgrounds/black_bg.png]
 
-.blockwhite Free IBM Cloud Account
+.blockwhite Sign in to IBM Cloud
 
-.blockteal https://ibm.biz/BdZ8ME
+* https://console.bluemix.net
