@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>K8s and Istio</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  
+
+  <link rel="stylesheet" type="text/css" href=".//css/highlight/default.css"  />
+  <link rel="stylesheet" type="text/css" href=".//css/mermaid-6.0.0.css" />
+  <link rel="stylesheet" type="text/css" href=".//css/font-awesome-4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href=".//css/introjs-2.5.local.css">
+  <link rel="stylesheet" type="text/css" href=".//css/jquery-ui-1.12.1.css">
+  <link rel="stylesheet" type="text/css" href=".//css/showoff.css?v=0.19.6" />
+  <link rel="stylesheet" type="text/css" href=".//css/zoomline-0.0.1.css">
+
+  <script type="text/javascript" src=".//js/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src=".//js/jquery-ui-1.12.1.js"></script>
+
+  <script type="text/javascript" src=".//js/jquery.cycle.all-2.8.0.js"></script>
+  <script type="text/javascript" src=".//js/jquery.batchImageLoad-1.0.0.js"></script>
+  <script type="text/javascript" src=".//js/jquery.parsequery.min-6a20f83.js"></script>
+  <script type="text/javascript" src=".//js/jquery.doubletap-4ff02c5.js"></script>
+  <script type="text/javascript" src=".//js/highlight.pack-9.2.0.js"></script>
+  <script type="text/javascript" src=".//js/jTypeWriter-1.1.js"></script>
+  <script type="text/javascript" src=".//js/bigtext-0.1.8.js"></script>
+  <script type="text/javascript" src=".//js/zoomline-0.0.1.js"></script>
+  <script type="text/javascript" src=".//js/simpleStrings-0.0.1.js"></script>
+  <script type="text/javascript" src=".//js/mermaid-6.0.0-min.js"></script>
+
+  <!-- waiting on https://github.com/usablica/intro.js/pull/727 -->
+  <script type="text/javascript" src=".//js/intro-2.5.local.js"></script>
+
+  <script type="text/javascript" src=".//js/coffee-script-1.1.3-pre.js"></script>
+
+  <script type="text/javascript" src=".//js/annotations.js?v=0.19.6"></script>
+  <script type="text/javascript" src=".//js/showoff.js?v=0.19.6"></script>
+
+  
+    <link rel="stylesheet" href=".//file/styles.css" type="text/css"/>
+  
+
+  
+
+  <script type="text/javascript">
+    $(function(){
+      setupPreso(false, './');
+    });
+
+    editUrl     = "";
+    interactive = false;
+    master      = false;
+    presenter   = false;
+
+    keymap               = {
+  "d": "DEBUG",
+  "space": "NEXT",
+  "down": "NEXT",
+  "right": "NEXT",
+  "pagedown": "NEXT",
+  "up": "PREV",
+  "left": "PREV",
+  "pageup": "PREV",
+  "SPACE": "NEXTSEC",
+  "DOWN": "NEXTSEC",
+  "RIGHT": "NEXTSEC",
+  "PAGEDOWN": "NEXTSEC",
+  "UP": "PREVSEC",
+  "LEFT": "PREVSEC",
+  "PAGEUP": "PREVSEC",
+  "R": "RELOAD",
+  "r": "REFRESH",
+  "c": "CONTENTS",
+  "t": "CONTENTS",
+  "h": "HELP",
+  "/": "HELP",
+  "?": "HELP",
+  "b": "BLANK",
+  ".": "BLANK",
+  "F": "FOOTER",
+  "f": "FOLLOW",
+  "n": "NOTES",
+  "esc": "CLEAR",
+  "p": "PAUSE",
+  "P": "PRESHOW",
+  "x": "EXECUTE",
+  "f5": "EXECUTE"
+};
+    keycode_dictionary   = {
+  "0": "\\",
+  "8": "backspace",
+  "9": "tab",
+  "12": "num",
+  "13": "enter",
+  "16": "shift",
+  "17": "ctrl",
+  "18": "alt",
+  "19": "pause",
+  "20": "caps",
+  "27": "esc",
+  "32": "space",
+  "33": "pageup",
+  "34": "pagedown",
+  "35": "end",
+  "36": "home",
+  "37": "left",
+  "38": "up",
+  "39": "right",
+  "40": "down",
+  "44": "print",
+  "45": "insert",
+  "46": "delete",
+  "48": "0",
+  "49": "1",
+  "50": "2",
+  "51": "3",
+  "52": "4",
+  "53": "5",
+  "54": "6",
+  "55": "7",
+  "56": "8",
+  "57": "9",
+  "59": ";",
+  "61": "=",
+  "65": "a",
+  "66": "b",
+  "67": "c",
+  "68": "d",
+  "69": "e",
+  "70": "f",
+  "71": "g",
+  "72": "h",
+  "73": "i",
+  "74": "j",
+  "75": "k",
+  "76": "l",
+  "77": "m",
+  "78": "n",
+  "79": "o",
+  "80": "p",
+  "81": "q",
+  "82": "r",
+  "83": "s",
+  "84": "t",
+  "85": "u",
+  "86": "v",
+  "87": "w",
+  "88": "x",
+  "89": "y",
+  "90": "z",
+  "91": "cmd",
+  "92": "cmd",
+  "93": "cmd",
+  "96": "num_0",
+  "97": "num_1",
+  "98": "num_2",
+  "99": "num_3",
+  "100": "num_4",
+  "101": "num_5",
+  "102": "num_6",
+  "103": "num_7",
+  "104": "num_8",
+  "105": "num_9",
+  "106": "num_multiply",
+  "107": "num_add",
+  "108": "num_enter",
+  "109": "num_subtract",
+  "110": "num_decimal",
+  "111": "num_divide",
+  "112": "f1",
+  "113": "f2",
+  "114": "f3",
+  "115": "f4",
+  "116": "f5",
+  "117": "f6",
+  "118": "f7",
+  "119": "f8",
+  "120": "f9",
+  "121": "f10",
+  "122": "f11",
+  "123": "f12",
+  "124": "print",
+  "144": "num",
+  "145": "scroll",
+  "173": "-",
+  "186": ";",
+  "187": "=",
+  "188": ",",
+  "189": "-",
+  "190": ".",
+  "191": "/",
+  "192": "`",
+  "219": "[",
+  "220": "\\",
+  "221": "]",
+  "222": "'",
+  "223": "`",
+  "224": "cmd",
+  "225": "alt",
+  "57392": "ctrl",
+  "63289": "num"
+};
+    keycode_shifted_keys = {
+  "0": ")",
+  "1": "!",
+  "2": "@",
+  "3": "#",
+  "4": "$",
+  "5": "%",
+  "6": "^",
+  "7": "&",
+  "8": "*",
+  "9": "(",
+  "/": "?",
+  ".": ">",
+  ",": "<",
+  "'": "\"",
+  ";": ":",
+  "[": "{",
+  "]": "}",
+  "\\": "|",
+  "`": "~",
+  "=": "+",
+  "-": "_",
+  "space": "SPACE",
+  "down": "DOWN",
+  "right": "RIGHT",
+  "pagedown": "PAGEDOWN",
+  "up": "UP",
+  "left": "LEFT",
+  "pageup": "PAGEUP"
+};
+    user_translations    = {
+};
+
+    I18n = new translation({"name":"Showoff Presentation","menu":{"title":"Showoff Menu","table_of_contents":"Table of Contents","downloads":"Downloads","feedback":{"label":"Send Feedback","description":"This slide is...","worst":"Terrible","best":"Awesome","why":"Why...?","send":"Send"},"pace":{"label":"The presenter should...","slower":"Slow Down","faster":"Speed Up"},"question":{"label":"Ask a Question","placeholder":"Ask a question..."},"edit":"Edit Current Slide","clear_annotations":"Clear Annotations","language":"Content Language","close":"Close","help":"Press <code>?</code> for help.","anonymous":"All features are anonymous.","sending":"Sending..."},"navigation":{"next":"Next","previous":"Previous","sync":"Sync Presentation"},"loading":"loading presentation...","activity_complete":"Activity complete","follow":{"label":"Follow Mode:"},"refresh":"Are you sure you want to refresh the slide content?\n\n(Use `RELOAD` to fully reload the entire UI)","reload":"Are you sure you want to reload Showoff?","preshow":{"prompt":"Minutes from now to start?","resume":"Resuming in:"},"tour":{"show":"See the Tour","reset":"Reset Hints","welcome":"<h3>Welcome to Showoff</h3>Let me show you around. After you finish this tour, it won't show again.","displayview":"Start by clicking this button to open the Display Window; then drag it onto the projector.","annotations":"Draw on your slides everywhere the presentation is displayed.","timer":"Set a countdown timer to help you stay on pace.","pace":"Audience members can use this to tell you if you're moving too quickly. Try to keep the indicator centered.","questions":"Questions asked by audience members are displayed here. You'll also see a count indicator on the Display Window when you have questions to answer.","notes":"Configure the notes display by zooming text, resizing the pane, or even popping it out into a new window.","slidesource":"The name of the slide is displayed here.","settings":"Would you like a different presenter layout? Choose that and other settings here.","edit":"This button will open your web-based editor--usually something like GitHub.","report":"Don't forget to report issues when you see them.","activity":{"count":"This will count down as audience members mark their activity complete. Their presentations will pause until completed.","complete":"Check this box when you're ready to move on. The presentation will pause while you're working."},"form":{"responses":"As questions are answered, they'll show up as a bar chart with the number of answers to each question on the right.","display":"Press this button to present a snapshot of the live responses on slide.","save":"Press this button to save your responses. The presentation will pause while answering."},"menu":{"start":"Click here to open the menu.","navigation":"Quickly navigate to any slide.","download":"Download presentation support files.","pace":"Provide pace feedback.","questions":"Ask live questions of the presenter.","feedback":"Provide suggestions for improving the content."}},"downloads":{"title":"File Downloads"},"help":{"title":"Help","next":"Move to the next slide.","prev":"Move to the previous slide.","nextsec":"Move to the next section.","prevsec":"Move to the previous section.","contents":"Show the table of contents menu.","follow":"Toggle follow mode.","help":"Show this help dialog.","refresh":"Refresh slide content.","reload":"Completely reload Showoff.","blank":"Blank the screen.","footer":"Toggle the display footer.","notes":"Toggle notes display.","clear":"Clear code execution results.","pause":"Pause the presentation.","preshow":"Display slideshow of <tt>preshow</tt> images on a timer.","execute":"Execute the first visible code block.","debug":"Show debugging information.","close":"Close"},"stats":{"title":"Viewing Statistics","stray":"of your audience is not viewing the same slide you are.","idle":"of your audience is idle.","current":"Slides currently being viewed","elapsed":"Elapsed time spent on each slide","nodata":"No data to display.","allcurrent":"All audience members are viewing the presenter's slide."},"forms":{"display":"Display Results","save":"Save"},"presenter":{"topbar":{"annotations":"Annotations","edit":"Edit Slide","report":"Report Issue With Slide","stats":"Viewing Statistics","downloads":"Downloads","display":"Display Window","print":"Print Slides","settings":"Settings","newpage":"Open in a new page...","tooltip":{"annotations":"Enable the annotations subsystem.","edit":"Edit current slide in new window.","report":"Report an issue with the current slide.","stats":"See the slides your audience is interacting with.","downloads":"Open the file downloads in a menu or new page.","display":"Enable the Display Window; you should put this on the projector.","print":"Print slides using a new window.","settings":"Open the Settings dialog."}},"preview":{"next":"Next","previous":"Previous"},"mobile":{"update":"Update"},"notes":{"label":"Showoff Notes","personal":"Personal Notes"},"timer":{"label":"Timer:","start":"Start","pause":"Pause","resume":"Resume","cancel":"Cancel","unit":"minutes"},"pace":{"faster":"Speed Up!","slower":"Slow Down!"},"questions":"Audience Questions","annotation":{"tools":"Tools","lines":"Lines","shapes":"Shapes"},"status":{"label":"Slides:"},"settings":{"label":"Settings","close":"Close","follower":{"label":"Update Follower","tooltip":"Send slide change notifications.","description":"When this is enabled, the Showoff server will track your slide changes. Disable it to observe the presentation without inadvertently causing slide changes."},"remote":{"label":"Enable Remote","tooltip":"Enables tracking of other presenters.","description":"When this is enabled, you can load the presenter in another browser (typically on your mobile phone) to control the presentation."},"layout":{"label":"Layout","default":"Default Layout","thumbs":"Display thumbnail previews of the next and previous slides.","beside":"Display the next slide as a large preview in the main presenter view.","floating":"Open the next slide as a floating window.","confirmation":"Browser security requires confirmation before opening a new window.","open":"Open Window","cancel":"cancel","reset":{"label":"Clear Showoff settings.","tooltip":"Reset Showoff UI settings to default values."}},"language":{"label":"Content Language","tooltip":"Select from available translations, or autoselect based on your browser settings.","description":"This presentation is available in different languages. Choose the language you would like to view or leave it at <tt>automatic</tt> to use your browser settings."}},"print":{"label":"Choose type of printed notes","description":"Select the content you'd like to show under the slides.","none":"Don't include notes","notes":"Presenter Notes","handouts":"Audience Handouts"}},"language":{"auto":"Automatic","disable":"Disable Translations"},"error":{"file_not_found":"File Not Found!"}});
+
+  </script>
+
+</head>
+
+<body>
+<div id="questionsIndicator"></div>
+
+<i id="hamburger" class="fa fa-bars fa-2x"></i>
+<div id="sidebarWrapper">
+    <div id="navigationHover"></div>
+    <div id="feedbackSidebar" class="sideMenu">
+    <img id="disconnected" src=".//css/disconnected.png">
+    <h3>Showoff Menu</h3>
+    <div id="navToggle" class="buttonWrapper"><i class=" fa fa-bookmark"></i> Table of Contents</div>
+    <div id="navigation" class="submenu"></div>
+    
+    <hr>
+
+    
+
+    
+
+    <div id="closeMenu" class="buttonWrapper"><i class="fa fa-close"></i> Close</div>
+    <hr>
+
+    <small>
+        <p>Press <code>?</code> for help.</p>
+        <p>All features are anonymous.</p>
+    </small>
+    </div>
+    <div id="sidebarExit"></div>
+</div>
+<div id="help-modal" title="Help">
+  <div id="help">
+    <div>
+      <span class="description">Move to the next slide.</span>
+      <span class="action">NEXT</span>
+      <span class="hotkeys"><span class="key">space</span><span class="key">down</span><span class="key">right</span><span class="key">pagedown</span></span>
+    </div>
+    <div>
+      <span class="description">Move to the previous slide.</span>
+      <span class="action">PREV</span>
+      <span class="hotkeys"><span class="key">up</span><span class="key">left</span><span class="key">pageup</span></span>
+    </div>
+    <div>
+      <span class="description">Move to the next section.</span>
+      <span class="action">NEXTSEC</span>
+      <span class="hotkeys"><span class="key">SPACE</span><span class="key">DOWN</span><span class="key">RIGHT</span><span class="key">PAGEDOWN</span></span>
+    </div>
+    <div>
+      <span class="description">Move to the previous section.</span>
+      <span class="action">PREVSEC</span>
+      <span class="hotkeys"><span class="key">UP</span><span class="key">LEFT</span><span class="key">PAGEUP</span></span>
+    </div>
+    <div>
+      <span class="description">Show the table of contents menu.</span>
+      <span class="action">CONTENTS</span>
+      <span class="hotkeys"><span class="key">c</span><span class="key">t</span></span>
+    </div>
+    <div>
+      <span class="description">Toggle follow mode.</span>
+      <span class="action">FOLLOW</span>
+      <span class="hotkeys"><span class="key">f</span></span>
+    </div>
+    <div>
+      <span class="description">Show this help dialog.</span>
+      <span class="action">HELP</span>
+      <span class="hotkeys"><span class="key">h</span><span class="key">/</span><span class="key">?</span></span>
+    </div>
+
+    <hr />
+
+    <div>
+      <span class="description">Refresh slide content.</span>
+      <span class="action">REFRESH</span>
+      <span class="hotkeys"><span class="key">r</span></span>
+    </div>
+    <div>
+      <span class="description">Completely reload Showoff.</span>
+      <span class="action">RELOAD</span>
+      <span class="hotkeys"><span class="key">R</span></span>
+    </div>
+    <div>
+      <span class="description">Blank the screen.</span>
+      <span class="action">BLANK</span>
+      <span class="hotkeys"><span class="key">b</span><span class="key">.</span></span>
+    </div>
+    <div>
+      <span class="description">Toggle the display footer.</span>
+      <span class="action">FOOTER</span>
+      <span class="hotkeys"><span class="key">F</span></span>
+    </div>
+    <div>
+      <span class="description">Toggle notes display.</span>
+      <span class="action">NOTES</span>
+      <span class="hotkeys"><span class="key">n</span></span>
+    </div>
+    <div>
+      <span class="description">Clear code execution results.</span>
+      <span class="action">CLEAR</span>
+      <span class="hotkeys"><span class="key">esc</span></span>
+    </div>
+    <div>
+      <span class="description">Pause the presentation.</span>
+      <span class="action">PAUSE</span>
+      <span class="hotkeys"><span class="key">p</span></span>
+    </div>
+    <div>
+      <span class="description">Display slideshow of <tt>preshow</tt> images on a timer.</span>
+      <span class="action">PRESHOW</span>
+      <span class="hotkeys"><span class="key">P</span></span>
+    </div>
+    <div>
+      <span class="description">Execute the first visible code block.</span>
+      <span class="action">EXECUTE</span>
+      <span class="hotkeys"><span class="key">x</span><span class="key">f5</span></span>
+    </div>
+
+    <hr />
+
+    <div>
+      <span class="description">Show debugging information.</span>
+      <span class="action">DEBUG</span>
+      <span class="hotkeys"><span class="key">d</span></span>
+    </div>
+  </div>
+</div>
+
+<div id="preso"><center>loading presentation...</center></div>
+<a id="synchronize"><i class="fa fa-link" aria-hidden="true" href="#"></i> Sync Presentation</a>
+<div id="notes"></div>
+
+<footer id="footer">
+  <span id="followLabel" class="container">Follow Mode: <i id="followMode" class="fa fa-ban" aria-hidden="true"></i></span>
+  <span id="slideInfo" class="container"></span>
+  <span id="debugInfo" class="container"></span>
+  <span id="notesInfo" class="container"></span>
+  <span id="slideFilename" class="container"></span>
+  <img id="disconnected" src=".//css/disconnected.png" />
+</footer>
+
+<div id="slides" class="offscreen" style="display:none;">
+<div data-section="Introduction" data-title="00_section" id="Introduction_00_section" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Introduction/00_section">
+<p class="blockwhite">Kubernetes 101 // IBM Developer Jumpstart</p>
+
+<p class="blockteal">Cullen Taylor // IBM</p>
+
+<p><img src="./file//_images/ibm_code_big.png" alt="IBM Code Logo"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Introduction" data-title="01_slide" id="Introduction_01_slide" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Introduction/01_slide">
+<h1>whoami</h1>
+
+<ul>
+<li>Cullen Taylor</li>
+<li>@eggshell on Slack, Freenode, GitHub</li>
+<li>@eggshellcullen on Twitter</li>
+<li>Developer Advocate for IBM</li>
+<li>Texas Native</li>
+<li>DevOps/OpenStack background</li>
+<li>slides: <a href="https://blog.eggshell.me/kubernetes-101" target="_blank">https://blog.eggshell.me/kubernetes-101</a>
+</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Introduction" data-title="02_slide" id="Introduction_02_slide" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Introduction/02_slide">
+<p class="blockwhite">The Kubernetes project is one of the best maintained and curated open source projects I’ve ever seen, and the communities around it are fantastic — there are really great people in every corner of that project.</p>
+
+<p class="blockteal">Jesse Newland - Github</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Introduction" data-title="03_slides" id="Introduction_03_slides" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Introduction/03_slides">
+<h1>Agenda</h1>
+
+<ul>
+<li>Account Setup</li>
+<li>Kubernetes Concepts</li>
+<li>Kubernetes Hands On</li>
+<li>Wrap up</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="00_section" id="Account_Setup_00_section" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Account Setup/00_section">
+<p class="blockwhite">Account Setup</p>
+
+<p class="blockteal">On the IBM Cloud</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="01_slide" id="Account_Setup_01_slide" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Account Setup/01_slide">
+<h1>Steps</h1>
+
+<ul>
+<li>Sign in to IBM Cloud account</li>
+<li>Navigate to Billing</li>
+<li>Add promotional code</li>
+<li>Navigate to Containers</li>
+<li>Create Kubernetes Cluster</li>
+<li>Install <code>ibmcloud</code> and <code>kubectl</code> utilities</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="02_slide" id="Account_Setup_02_slide" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Account Setup/02_slide">
+<p class="blockwhite">Sign in to IBM Cloud</p>
+
+<ul>
+<li><a href="https://console.bluemix.net" target="_blank">https://console.bluemix.net</a></li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="03_slides" id="Account_Setup_03_slides1" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Account Setup/03_slides:1">
+<p><img src="./file//_images/billing_add_code.png" alt="IBM Code"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="03_slides" id="Account_Setup_03_slides2" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Account Setup/03_slides:2">
+<p><img src="./file//_images/promo_code_added.png" alt="IBM Code"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="03_slides" id="Account_Setup_03_slides3" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Account Setup/03_slides:3">
+<p><img src="./file//_images/create_cluster.png" alt="IBM Code"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="03_slides" id="Account_Setup_03_slides4" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Account Setup/03_slides:4">
+<p><img src="./file//_images/create_cluster_2.png" alt="IBM Code"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="04_slides" id="Account_Setup_04_slides1" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Account Setup/04_slides:1">
+<h1>Install the IBM Developer Toolkit</h1>
+
+<pre><code><code class="command">$ curl -sL https://ibm.biz/idt-installer | bash</code>
+<code class="result">[main] --==[ IBM Cloud Developer Tools for Linux/MacOS - Installer, v1.2.3 ]==--
+[install] Starting Update...
+[install_deps] Checking for and updating 'apt-get' support on Linux
+...
+...
+</code></code></pre>
+
+
+</div>
+<div class="notes-section notes">
+
+<p><a href="https://console.bluemix.net/docs/cli/idt/setting_up_idt.html#add-cli" target="_blank">https://console.bluemix.net/docs/cli/idt/setting_up_idt.html#add-cli</a>
+<a href="https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html#getting-started" target="_blank">https://console.bluemix.net/docs/cli/reference/bluemix_cli/get_started.html#getting-started</a></p>
+
+<p><a href="https://clis.ng.bluemix.net/download/bluemix-cli/latest/osx" target="_blank">https://clis.ng.bluemix.net/download/bluemix-cli/latest/osx</a>
+<a href="https://clis.ng.bluemix.net/download/bluemix-cli/latest/win64" target="_blank">https://clis.ng.bluemix.net/download/bluemix-cli/latest/win64</a>
+<a href="https://clis.ng.bluemix.net/download/bluemix-cli/latest/linux64" target="_blank">https://clis.ng.bluemix.net/download/bluemix-cli/latest/linux64</a>
+<a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl" target="_blank">https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl</a></p>
+
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Account Setup" data-title="04_slides" id="Account_Setup_04_slides2" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Account Setup/04_slides:2">
+<h1>Validate installation</h1>
+
+<pre><code><code class="command">$ which bx</code>
+<code class="result">/usr/local/bin/bx
+</code><code class="command">$ which kubectl</code>
+<code class="result">/usr/bin/kubectl
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="00_section" id="Kubernetes_Concepts_00_section" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/00_section">
+<p class="blockwhite">Kubernetes Concepts</p>
+
+<p>.blockteal</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide1" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:1">
+<h1>Kubernetes</h1>
+
+<ul>
+<li>k8s for short</li>
+<li>Founded by Google</li>
+<li>CNCF: Cloud Native Computing Foundation</li>
+<li>Focused on container orchestration</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide2" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:2">
+<h1>What is a container</h1>
+
+<ul>
+<li>Usually, just a Docker container</li>
+<li>Strictly, the Open Container Initiative manages this definition</li>
+<li>Process on Linux*, subject to some sandboxing and restrictions</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide3" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:3">
+<h1>What is a container</h1>
+
+<p><img src="./file//_images/containers_vs_vm.png" alt="containersvsvm"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide4" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:4">
+<h1>Container Orchestration</h1>
+
+<ul>
+<li>Start some containers!</li>
+<li>Which containers are running?</li>
+<li>Did it crash? Restart it!</li>
+<li>Make more of them, but keep them on different physical hosts.</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide5" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:5">
+<p class="huge">Kubernetes manages containers. <span class="teal">Users of kubernetes</span> Manage higher level abstracted <span class="teal">resources.</span></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide6" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:6">
+<p class="blockwhite">Three 'killer' features:</p>
+
+<p class="blockteal">* Automatic Restarts</p>
+
+<p class="blockteal">* Horizontal Scaling</p>
+
+<p class="blockteal">* Service Discovery</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide7" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:7">
+<h1>Horizontal Scaling</h1>
+
+<ul>
+<li>Scale "out" or "in"</li>
+<li>Add (or remove) nodes to a system</li>
+<li>Example would be deploying your webapp to 3 more servers, stick behind a
+load balancer.</li>
+<li>In the past, had to rack a new server, bootstrap the OS and bins/libs, then
+deploy your app.</li>
+<li>Now, we can just deploy more containers to different physical hosts.</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide8" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:8">
+<h1>Service Discovery</h1>
+
+<ul>
+<li>We'll come back to this in a bit.</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide9" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Concepts/01_slide:9">
+<h1>Working with Kubernetes</h1>
+
+<pre><code><code class="command">$ kubectl get deploy</code>
+<code class="result">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide10" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Concepts/01_slide:10">
+<h1>Working with Kubernetes</h1>
+
+<pre><code><code class="command">$ cat guestbook-deployment.yaml</code>
+<code class="result">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: guestbook
+...
+</code><code class="command">$ kubectl create -f guestbook-deployment.yaml</code>
+<code class="result">deployment.apps "guestbook" created
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide11" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Concepts/01_slide:11">
+<h1>Working with Kubernetes</h1>
+
+<pre><code><code class="command">$ kubectl get deploy</code>
+<code class="result">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+redis-master   1         1
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide12" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:12">
+<p class="blockwhite">Quick Pause</p>
+
+<p class="blockteal">Any Account or Cluster issues?</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide13" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Concepts/01_slide:13">
+<h1>Kubernetes Resources</h1>
+
+<ul>
+<li>Pod</li>
+<li>Deployment</li>
+<li>Service</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide14" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Concepts/01_slide:14">
+<h1>Pod</h1>
+
+<ul>
+<li>Smallest unit of deployment - "the atom"</li>
+<li>Consists usually of one container</li>
+<li>Has an image, version, exposed port, etc</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide15" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Concepts/01_slide:15">
+<h1>Deployment</h1>
+
+<ul>
+<li>Deployments manage <em>replicasets</em>
+</li>
+<li>Replicasets manage pods</li>
+<li>Entrypoint for more advanced rollout strategies</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide16" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Concepts/01_slide:16">
+<h1>ReplicaSet</h1>
+
+<ul>
+<li>Ensures that a specified number of pod "replicas" are running.</li>
+<li>Makes sure a homogenous set of pods are always up and available.</li>
+<li>Too many pods? Kill some!</li>
+<li>Too few pods? Spin up some more!</li>
+<li>Ensures state is kept where you want it without you needing to poke it.</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide17" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Concepts/01_slide:17">
+<h1>Service</h1>
+
+<ul>
+<li>Exposes a single ip to the rest of the cluster</li>
+<li>Almost like a load balancer</li>
+<li>Maps to one or more pods</li>
+<li>This combination of pods running some software and providing a way to access
+it is called a <strong>microservice</strong>
+</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide18" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:18">
+<h1>Service Discovery</h1>
+
+<ul>
+<li>Managed Kubernetes cluster services (IKS, GCP, Azure, etc) typically give you
+a DNS server.</li>
+<li>If you have a service called "my-service" in namepsace "my-ns", then</li>
+<li>a DNS record for "my-service.my-ns" is created.</li>
+<li>All pods within the "my-ns" namespace will be able to find this service.</li>
+<li>Prevents having to refer to hardcoded ip values.</li>
+<li>Makes horizontal scaling easy.</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide19" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:19">
+<h1>A Visual Aid for All of That</h1>
+
+<p><img src="./file//_images/k8s_logical_constructs.png" alt="Kubernetes Logical Constructs"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="01_slide" id="Kubernetes_Concepts_01_slide20" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/01_slide:20">
+<h1>Community Resources</h1>
+
+<ul>
+<li><a href="https://kubernetes.io/docs/imported/community/devel/" target="_blank">https://kubernetes.io/docs/imported/community/devel/</a></li>
+<li>Slack: kubernetes.slack.com</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Concepts" data-title="02_slide" id="Kubernetes_Concepts_02_slide" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Concepts/02_slide">
+<p class="blockwhite">To be honest, the API that Kubernetes provides is the one we've always wanted.</p>
+
+<p class="blockteal">Sam Ghods - Box</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="00_section" id="Kubernetes_Deployments_00_section" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Deployments/00_section">
+<p class="blockwhite">Kubernetes Deployments</p>
+
+<p class="blockteal">On the IBM Cloud</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide1" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Deployments/01_slide:1">
+<h1>Outline</h1>
+
+<ul>
+<li>Configure <code>kubectl</code>
+</li>
+<li>Clone source code</li>
+<li>Deploy redis "database"</li>
+<li>Deploy sample app</li>
+<li>Poke app /w stick</li>
+<li>Delete app</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide2" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Deployments/01_slide:2">
+<h1>What's not covered</h1>
+
+<ul>
+<li>Docker build step</li>
+<li>Making a change to the app</li>
+<li>Deploying new version</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide3" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:3">
+<h1>Account Login from the Commandline</h1>
+
+<pre><code><code class="command">$ bx login --sso</code>
+<code class="command">$ bx api</code>
+<code class="result">API endpoint: https://api.ng.bluemix.net
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide4" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:4">
+<h1>Account setup</h1>
+
+<pre><code><code class="command">$ bx cs clusters</code>
+<code class="result">Name                         ID                                 State       Created          Workers   Location   Version
+eggshell-kube-101            8d2ef30a4f524bdbb179d7f0b4e02125   normal     4 hours ago      3         dal10      1.9.8_1515
+</code><code class="command">$ bx cs cluster-config eggshell-kube-101</code>
+<code class="result">OK
+The configuration for eggshell-kube-101 was downloaded successfully. Export environment variables to start using Kubernetes.
+
+export KUBECONFIG=/home/eggshell/.bluemix/plugins/container-service/clusters/eggshell-kube-101/kube-config-dal10-eggshell-kube-101.yml
+</code><code class="command">$ export KUBECONFIG=/home/eggshell/.bluemix/plugins/container-service/clusters/eggshell-kube-101/kube-config-dal10-eggshell-kube-101.yml</code>
+</code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide5" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:5">
+<h1>Clone the code</h1>
+
+<pre><code><code class="command">$ git clone https://github.com/IBM/guestbook</code>
+<code class="result">Cloning into 'guestbook'...
+remote: Counting objects: 166, done.
+remote: Total 166 (delta 0), reused 0 (delta 0), pack-reused 165
+Receiving objects: 100% (166/166), 88.84 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (92/92), done.
+Checking connectivity... done.
+</code><code class="command">$ cd guestbook</code>
+</code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide6" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:6">
+<h1>Validate the cluster is empty</h1>
+
+<pre><code><code class="command">$ kubectl get deploy</code>
+<code class="result">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+
+</code><code class="command">$ kubectl get pod</code>
+<code class="result">NAME                                 READY     STATUS    RESTARTS   AGE
+
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide7" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:7">
+<h1>Deploy the redis master</h1>
+
+<pre><code><code class="command">$ kubectl create -f redis-master-deployment.yaml</code>
+<code class="result">deployment "redis-master" created
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide8" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:8">
+<h1>Evaluate what has been created</h1>
+
+<pre><code><code class="command">$ kubectl get deploy</code>
+<code class="result">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE 
+redis-master   1         1         1            1           10m
+
+</code><code class="command">$ kubectl get replicaset</code>
+<code class="result">NAME                      DESIRED   CURRENT   READY     AGE 
+redis-master-6767cf65c7   1      
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide9" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:9">
+<h1>Evaluate what has been created</h1>
+
+<pre><code><code class="command">$ kubectl get pods</code>
+<code class="result">NAME                        READY     STATUS    RESTARTS   AGE 
+redis-master-xx4uv          1/1       Running   0          1m
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide10" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:10">
+<h1>Evaluate what has been created</h1>
+
+<pre><code><code class="command">$ : kubectl describe deploy/redis-master</code>
+<code class="result">Name:                   redis-master
+Namespace:              default
+CreationTimestamp:      Fri, 27 Apr 2018 13:46:56 -0500
+...
+
+
+</code><code class="command">$ kubectl describe pod/redis-master-6767cf65c7-7kgcw</code>
+<code class="result">Name:           redis-master-6767cf65c7-7kgcw
+Namespace:      default
+Node:           10.186.59.66/10.186.59.66
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide11" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Deployments/01_slide:11">
+<p class="blockwhite">Pause and Inquire!</p>
+
+<p class="blockteal">What version of redis has been deployed?</p>
+
+<p class="blockteal">How many replicas have been deployed?</p>
+
+<p class="blockteal">What is the most recent event in the event log for the pod?</p>
+
+<p><code>Hint! Use kubectl describe</code></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide12" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:12">
+<h1>Deploy a service for the redis master</h1>
+
+<pre><code><code class="command">$ kubectl create -f redis-master-service.yaml</code>
+<code class="result">services/redis-master
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide13" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:13">
+<h1>Verify service</h1>
+
+<pre><code><code class="command">$ kubectl get services</code>
+<code class="result">NAME              CLUSTER_IP       EXTERNAL_IP       PORT(S)       SELECTOR               AGE
+redis-master      10.0.136.3       &lt;none&gt;            6379/TCP      app=redis,role=master  1h
+...
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide14" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:14">
+<h1>Deploy redis downstream servers</h1>
+
+<pre><code><code class="command">$ kubectl create -f redis-slave-deployment.yaml</code>
+<code class="result">deployment.apps "redis-slave" created
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide15" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:15">
+<h1>Deploy redis downstream servers</h1>
+
+<pre><code><code class="command">$ kubectl get deploy</code>
+<code class="result">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+redis-master   1         1         1            1           23m
+redis-slave    2         2         2            0           15s
+
+</code><code class="command">$ kubectl get rs</code>
+<code class="result">NAME                      DESIRED   CURRENT   READY     AGE
+redis-master-6767cf65c7   1         1         1         23m
+redis-slave-564b7bd5d9    2         2         2         30s
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide16" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:16">
+<h1>Validate everything</h1>
+
+<pre><code><code class="command">$ kubectl get pods</code>
+<code class="result">NAME                          READY     STATUS    RESTARTS   AGE
+redis-master-xx4uv            1/1       Running   0          25m
+redis-slave-b6wj4             1/1       Running   0          1m
+redis-slave-iai40             1/1       Running   0          1m
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide17" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Deployments/01_slide:17">
+<h1>A note on Redis</h1>
+
+<ul>
+<li>
+<p>The Redis slaves get started by the deployment/replicaset with the following command:</p>
+
+<p><code>redis-server --slaveof redis-master 6379</code></p>
+</li>
+<li><p>Why does this work?</p></li>
+<li><p>Service Discovery!</p></li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide18" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Deployments/01_slide:18">
+<h1>Service Discovery</h1>
+
+<ul>
+<li>Every k8s <code>service</code> creates a <code>cluster-ip</code>
+</li>
+<li>Every container running in k8s can see all these ips</li>
+<li>The name of the service is injected into DNS and environment variables</li>
+<li>How can we explore/verify this?</li>
+</ul>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide19" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Deployments/01_slide:19">
+<h1>Get a shell inside the cluster</h1>
+
+<pre class="highlight"><code class="language-console">kubectl run -i --tty --rm debug \
+--image=busybox --restart=Never -- sh</code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide20" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Deployments/01_slide:20">
+<p class="blockwhite">Pause and Inquire!</p>
+
+<p class="blockteal">Use the shell example to get a working debug pod</p>
+
+<p class="blockteal">Extra: Run <code>kubectl get pod</code> in another terminal to see your debug pod</p>
+
+<p><code>Hint!  kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh</code></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide21" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Deployments/01_slide:21">
+<p class="blockwhite">Pause and Inquire!</p>
+
+<p class="blockteal">Use <code>env</code> and <code>nslookup</code> to verify that service discovery works</p>
+
+<p class="blockteal">Extra: If you <code>kubectl delete</code> the redis-server pod, what happens?</p>
+
+<p><code>Hint!  kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh</code></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide22" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:22">
+<h1>Deploy the 'guestbook' application</h1>
+
+<pre><code><code class="command">$ kubectl create -f guestbook-deployment.yaml</code>
+<code class="result">deployment.apps "guestbook" created
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide23" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:23">
+<h1>Verify installation</h1>
+
+<pre><code><code class="command">$ kubectl get deploy</code>
+<code class="result">NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+redis-master   1         1         1            1           23m
+redis-slave    2         2         2            0           15s
+
+</code><code class="command">$ kubectl get rs</code>
+<code class="result">NAME                      DESIRED   CURRENT   READY     AGE
+redis-master-6767cf65c7   1         1         1         23m
+redis-slave-564b7bd5d9    2         2         2         30s
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide24" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:24">
+<h1>View Pods</h1>
+
+<pre><code><code class="command">$ kubectl get pods</code>
+<code class="result">NAME                           READY     STATUS    RESTARTS   AGE
+guestbook-3crgn                1/1       Running   0          2m
+guestbook-gv7i6                1/1       Running   0          2m
+guestbook-x405a                1/1       Running   0          2m
+redis-master-xx4uv             1/1       Running   0          23m
+redis-slave-b6wj4              1/1       Running   0          6m
+redis-slave-iai40              1/1       Running   0          6m
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide25" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:25">
+<h1>Create guestbook service</h1>
+
+<pre><code><code class="command">$ kubectl create -f guestbook-service.yaml</code>
+</code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide26" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:26">
+<h1>View all services</h1>
+
+<pre><code><code class="command">$ kubectl get services</code>
+<code class="result">NAME              CLUSTER_IP       EXTERNAL_IP       PORT(S)       SELECTOR               AGE
+guestbook         10.0.217.218     146.148.81.8      3000/TCP      app=guestbook          1h
+redis-master      10.0.136.3       &lt;none&gt;            6379/TCP      app=redis,role=master  1h
+redis-slave       10.0.21.92       &lt;none&gt;            6379/TCP      app-redis,role=slave   1h
+...
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide27" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide incremental" data-transition="none">
+<div class="content incremental" ref="Kubernetes Deployments/01_slide:27">
+<h1>Use app!</h1>
+
+<p>http://&lt;EXTERNAL_IP&gt;:3000</p>
+
+<p><img src="./file//_images/guestbook-page.png" alt="Guestbook"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="01_slide" id="Kubernetes_Deployments_01_slide28" style="background-image: url('file/_images/backgrounds/white_bg.png');" class="slide commandline incremental" data-transition="none">
+<div class="content commandline incremental" ref="Kubernetes Deployments/01_slide:28">
+<h1>Delete Everything</h1>
+
+<pre><code><code class="command">$ kubectl delete -f .</code>
+<code class="result">deployment.apps "redis-master" deleted
+service "redis-master" deleted
+</code></code></pre>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Kubernetes Deployments" data-title="02_slide" id="Kubernetes_Deployments_02_slide" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Kubernetes Deployments/02_slide">
+<p class="blockwhite">To be honest, the API that Kubernetes provides is the one we've always wanted.</p>
+
+<p class="blockteal">Sam Ghods - Box</p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+<div data-section="Conclusion" data-title="00_section" id="Conclusion_00_section" style="background-image: url('file/_images/backgrounds/black_bg.png');" class="slide" data-transition="none">
+<div class="content " ref="Conclusion/00_section">
+<p class="blockwhite">Kubernetes 101 // IBM Developer Jumpstart</p>
+
+<p class="blockteal">Cullen Taylor // IBM</p>
+
+<p><img src="./file//_images/ibm_code_big.png" alt="IBM Code Logo"></p>
+</div>
+<canvas class="annotations"></canvas>
+</div>
+</div>
+<div id="buttonNav">
+  <div id="buttonPrev"><i class="fa fa-chevron-left fa-lg"></i> Previous</div><div id="buttonNext">Next <i class="fa fa-chevron-right fa-lg"></i></div>
+</div>
+<div id="pauseScreen">
+  PAUSED
+</div>
+
+  <script defer type="text/javascript">
+    // We want the audience members to see automatic tours. We can assume that they won't be
+    // using many server domains like the presenter might.
+    var autoTour = true;
+
+    $( document ).ready(function() {
+      if(presenter && !window.opener) {
+        alert('This is an audience view designed for interactivity. If you are placing this window on a projector, you should use the Display View instead.');
+      }
+
+      tours['showoff:activity'] = [
+        {
+          element: ".currentSlide .activityToggle",
+          intro: I18n.t('tour.activity.complete')
+        }
+      ];
+
+      tours['showoff:form'] = [
+        {
+          element: ".currentSlide input.save",
+          intro: I18n.t('tour.form.save')
+        }
+      ];
+
+      tours['showoff:menu'] = [
+        {
+          element: "#hamburger",
+          intro: I18n.t('tour.menu.start')
+        },
+        {
+          element: "#navToggle",
+          intro: I18n.t('tour.menu.navigation')
+        },
+        {
+          element: "#fileDownloads",
+          intro: I18n.t('tour.menu.download')
+        },
+        {
+          element: "#paceFaster",
+          intro: I18n.t('tour.menu.pace')
+        },
+        {
+          element: "#questionToggle",
+          intro: I18n.t('tour.menu.questions')
+        },
+        {
+          element: "#feedbackToggle",
+          intro: I18n.t('tour.menu.feedback')
+        }
+      ].filter(function(item) { return (document.querySelector(item['element'])) });
+      // display tips for only the enabled features
+    });
+  </script>
+
+</body>
+</html>
